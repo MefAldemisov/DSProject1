@@ -1,6 +1,6 @@
 # Distributed Systems Project1
 
-## Bogdanova Alina (BS18-SE02) & Dubina Nikita (BS18-SB01)
+## Alina Bogdanova (BS18-SE02) & Nikita Dubina  (BS18-SB01)
 
 ### Part 1. Docker.
 
@@ -10,19 +10,19 @@ Docker machine is a piece of software, which provides services for managing dist
 
 2. **What is Docker Swarm, what is it used for and why is it important in Containers Orchestration?**
 
-Docker Swarm is a cluster-management tool. It is important for the Containers Orchestration, because it improves system scalability. Docker Swarm joins several Docker-hosts in one virtual. It provides an API interface which is compatible with Docker API, and all the instruments, which are used by Docker’s API are working with Docker Swarm, moreover, they will think that they work with the one Docker machine, but in reality, they work with a cluster.
+Docker Swarm is a cluster-management tool. It is important for the Containers Orchestration, because it improves system scalability. Docker Swarm joins several Docker-hosts in one virtual. It provides an API interface which is compatible with Docker API, and all the isntruments, which are used by Docker’s API are working with Docker Swarm, moreover, they will think that they work with the one Docker machine, but in reality, they work with a cluster.
 
-3. \*\*Install Docker-machine based on your virtualization platform (VirtualBox, Hyper-V, VMware), create a Machine (named Master), and collect some relevant information for you. Example:
+3. **Install Docker-machine based on your virtualization platform (VirtualBox, Hyper-V, VMware), create a Machine (named Master), and collect some relevant information for you. Example:**
 
 -   Docker-machine drivers.
 -   Docker-machine provisioning.
--   Experiment with some docker-machine commands (rm, stop, start commands).\*\*
+-   Experiment with some docker-machine commands (rm, stop, start commands).
 
 Hyper-V was used as a virtualization platform.
 Master machine was created, some info about it was collected, using commands:
 
 ```
-docker-machine create --driver hyperv Master
+$docker-machine create --driver hyperv Master
 ```
 
 ```
@@ -115,7 +115,10 @@ $docker node demote Worker1
 
 ![Depromote result](https://i.imgur.com/Ssa39G3.png)
 
-**Hint:** Check if worker nodes require the exact same system patch level.
+
+What is required for node to be promoted to master?
+
+Thinking logically, the requirements to promote Worker machine to Master is that the time of last dump of the Worker should be at least no earlier than on Master. To promote Master to Worker we have no special requirements exclude that some machine should be promoted to Master instead.
 
 7. **Deploy a simple Web page, e.g Nginx, showing the hostname of the host node it is running upon, and validate that its instances are spreading across the servers previously deployed on your farm.**
 
@@ -155,7 +158,7 @@ web:
 
 ![Scale with stack](https://i.imgur.com/baOFLbU.png)
 
-
+Docker Swarm does not support auto-scaling machines as is. To automatize the process of scaling, the docker-machine should be used to create machines or remove them from the infrastructure. In this case, `docker swarm join `should be used to link them to a cluster.
 
 9. **Validate that when a node goes down a new instance is launched. Show how the redistribution of the instances can happen when the dead node comes back alive.**
 
@@ -299,7 +302,6 @@ This is a decoder ["like Artemy Lebedev's"](https://www.artlebedev.ru/decoder/).
 
 ### References:
 
--   [Manager and Worker nodes descroption](https://docs.docker.com/engine/swarm/join-nodes/)
 -   [Docker swarm + create service tutorial](https://rominirani.com/docker-swarm-tutorial-b67470cf8872)
 -   [Node promotion](https://stackoverflow.com/questions/42412863/changing-node-to-manager-in-docker-swarm-what-command-should-i-use)
 -   [OOME](https://docs.docker.com/config/containers/resource_constraints/)
