@@ -7,7 +7,7 @@ import os
 # ------------------BD------------------------
 import redis
 cache = redis.Redis(host='redis', port=6379)
-cache.mset({
+dict = {
 	"q": "й",
 	"w": "ц",
 	"e": "у",
@@ -34,12 +34,13 @@ cache.mset({
 	"b": "и",
 	"n": "т",
 	"m": "ь",
-})
+}
+for k in dict.keys():
+	cache.mset({dict[k]:k, k:dict[k]})
 
 
-def translate(lang_from:str, lang_to:str, txt:str):
+def translate(txt:str):
 	a = ""
-	print(lang_from, lang_to, txt) #TO BE LOGGED
 	for c in txt:
 		nxt = cache.get(c)
 		if (str(nxt) != "None"):
@@ -58,11 +59,11 @@ def index():
 def login():
 	if request.method == 'POST':
 		# # get form data
-		initial = request.form['input_lang']
-		target = request.form['target_lang']
+		# initial = request.form['input_lang']
+		# target = request.form['target_lang']
 		text = request.form['text']
 		# render template
-		output = translate(initial, target, text)
+		output = translate(text)
 		return render_template("index.html", output=output, name=os.getenv("NAME", "world"), hostname=socket.gethostname())
 
 if __name__ == "__main__":

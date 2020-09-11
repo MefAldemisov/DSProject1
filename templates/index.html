@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 	<title>Project1</title>
 	<!-- bootstrap -->
@@ -10,7 +11,7 @@
 	<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
 	<!-- axious (requests) -->
 	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-	<style>
+	<!-- <style>
 		.div-input,
 		.div-target {
 			position: relative;
@@ -30,125 +31,137 @@
 			cursor: pointer;
 		}
 
-	</style>
+	</style> -->
 
 </head>
+
 <body>
 	<header class="container-fluid jumbotron">
-		<h1>Hello, from v3.3 simple nginx page!</h1>
+		<h1>This is a decoder "like Artemy Lebedev's"!</h1>
 		<div>
 			<h2>Current ip:<span id='host_span'></span></h2>
 			<p>
 				My name is {{name}}
-				<br/>
+				<br />
 				Myhostname is {{hostname}}
 			</p>
-			<p>
-				If you see this page, the nginx web server is successfully installed and working. 
-				Further configuration is required.
+			<p>Why is it needed? It's simple:
+				ащк срфтпштп еру дфнщге ща еру цкщтп зкштеув еуче!
 			</p>
 			<p>
-				For online documentation and support please refer to <a href="nginx.org">nginx.org</a>.
-				Commercial support is available at <a href="nginx.com">nginx.com</a>.
+				Just enter the text that was printed on the English layout in Russian letters or vice versa, and you
+				will get the correct message!
 			</p>
-			<p><i>Thank you for using nginx.</i></p>
+			<p><i>Thank you!</i></p>
+			<hr>
+			<p>
+				Это декодер "как у Артемия Лебедева"!
+			</p>
+			<p>Зачем он нужен? Все просто:
+				lkz njuj? xnj,s cvtybnm hfcrkflre ntrcnf!
+			</p>
+			<p>Просто введите текст, который был напечатан на английской раскладке русскими буквами или наоборот, и
+				получите правильное сообщение!
+			</p>
 		</div>
 	</header>
-	<main class="container" id="main"> 
-	<article class="row">
-		<section class="col border">
-			<h2>Initial text</h2>
-			<form :action="ip" method="post">
-				<div class="row">
-					<div class="col">
-						<div class="row div-input">
-							<div class="col">Initial layout</div>
-							<div class="col" >
-								<span><% input_lang %></span>
-								<input type="hidden" name="input_lang" v-model="input_lang">
+	<main class="container" id="main">
+		<article class="row">
+			<section class="col border">
+				<h2>Initial text</h2>
+				<form :action="ip" method="post">
+					<!-- <div class="row">
+						<div class="col">
+							<div class="row div-input">
+								<div class="col">Initial layout</div>
+								<div class="col">
+									<span><% input_lang %></span>
+									<input type="hidden" name="input_lang" v-model="input_lang">
+								</div>
+								<lang-list class="i_rel lang-list" @select="setILang($event)"></lang-list>
 							</div>
-							<lang-list class="i_rel lang-list" @select="setILang($event)"></lang-list>
+
+						</div>
+						<div class="col">
+							<div class="row div-target">
+								<div class="col">Target layout</div>
+								<div class="col">
+									<span><% target_lang %></span>
+									<input type="hidden" name="target_lang" v-model="target_lang">
+
+								</div>
+								<lang-list class="t_rel lang-list" @select="setOLang($event)"></lang-list>
+							</div>
 						</div>
 
-					</div>
-					<div class="col">
-						<div class="row div-target">
-							<div class="col">Target layout</div>
-							<div class="col">
-								<span><% target_lang %></span>
-								<input type="hidden" name="target_lang" v-model="target_lang">
+					</div> -->
+					<textarea class="w-100" class="form-control" rows="5" name='text'>
 
-							</div>
-							<lang-list class="t_rel lang-list" @select="setOLang($event)"></lang-list>
-						</div>
-					</div>
-					
-				</div>
-				<textarea class="w-100" class="form-control" rows="5" name='text'>
-					
 				</textarea>
-				<div class="w-100">
-					<button type="submit" class="btn btn-primary w-100">Submit</button>
-				</div>
-			</form>
-		</section>
-		<section class="col border">
-			<h2>Result</h2>
-			<div :class="{'spinner-border': !output}" > <% output %> </div>	
-		</section>
-		<script type="text/javascript">
-			let OUTPUT = '{{ output }}';
-			console.log(OUTPUT)
-		</script>
-	</article>
-</main>
-<script type="text/javascript">
+					<div class="w-100">
+						<button type="submit" class="btn btn-primary w-100">Submit</button>
+					</div>
+				</form>
+			</section>
+			<section class="col border">
+				<h2>Result</h2>
+				<div :class="{'spinner-border': !output}"> <% output %> </div>
+			</section>
+			<script type="text/javascript">
+				let OUTPUT = '{{ output }}';
+				console.log(OUTPUT)
+			</script>
+		</article>
+	</main>
+	<script type="text/javascript">
+		const ip = location.host;
+		document.getElementById("host_span").innerHTML = ip;
+		console.log(ip);
 
-    const ip = location.host;
-    document.getElementById("host_span").innerHTML = ip;
-    console.log(ip);
+		Vue.options.delimiters = ["<%", "%>"];
+		// 	Vue.component('lang-list', {
+		// 		data() {
+		// 			return {
+		// 				langs: [{
+		// 					txt: "RU"
+		// 				}, {
+		// 					txt: "EN"
+		// 				}],
+		// 				selected: "RU"
+		// 			}
+		// 		},
+		// 		template: `
+		//   	<ul class="list-group" style="width:5rem">
+		//   		<li class="list-group-item" v-for='l in langs' :key="l.txt" @click="select(l)" :class="{'active': selected==l.txt}" > <% l.txt %> </li>
 
-    Vue.options.delimiters = ["<%","%>"];
-	Vue.component('lang-list', {
-	  data() {
-	  	return {
-	  		langs: [{txt:"RU"}, {txt:"EN"}],
-	  		selected: "RU"
-	  	}
-	  },
-	  template: `
-	  	<ul class="list-group" style="width:5rem">
-	  		<li class="list-group-item" v-for='l in langs' :key="l.txt" @click="select(l)" :class="{'active': selected==l.txt}" > <% l.txt %> </li>
-	  		
-	  	</ul>
-	  `,
-	  methods: {
-	  	select(l) {
-	  		this.selected = l.txt;
-	  		this.$emit('select', l.txt);
-	  	}
-	  }
+		//   	</ul>
+		//   `,
+		// 		methods: {
+		// 			select(l) {
+		// 				this.selected = l.txt;
+		// 				this.$emit('select', l.txt);
+		// 			}
+		// 		}
 
-	})
-	new Vue({
-		el:"#main",
-		data: {
-			input_lang : "RU",
-			target_lang: "RU",
-			output: OUTPUT,
-			ip: "http://" + location.host
-		},
-		methods: {
-			setILang(val){
-				this.input_lang = val;
+		// 	})
+		new Vue({
+			el: "#main",
+			data: {
+				// input_lang: "RU",
+				// target_lang: "RU",
+				output: OUTPUT,
+				ip: "http://" + location.host
 			},
-			setOLang(val){
-				this.target_lang = val;
-			}
-		}
-	})
-
-</script>
-</body> 	 
+			// methods: {
+			// 	setILang(val) {
+			// 		this.input_lang = val;
+			// 	},
+			// 	setOLang(val) {
+			// 		this.target_lang = val;
+			// 	}
+			// }
+		})
+	</script>
+</body>
 
 </html>

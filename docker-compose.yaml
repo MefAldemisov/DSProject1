@@ -1,13 +1,13 @@
-version: '3'
+version: "3"
 services:
-  web:
-    image: "mefaldemisov/project1:v4"
-    ports:
-      - "5000:5000"
-    deploy:
-      replicas: 2
-      resources: 
-        limits:
-          cpus: "0.15"
-  redis:
-    image: "redis:alpine"
+    web:
+        image: "mefaldemisov/project1:v5.3"
+        ports:
+            - "5000:5000"
+        deploy:
+            replicas: 2
+            resources:
+                limits:
+                    cpus: "0.15"
+    redis:
+        image: "redis:alpine"
