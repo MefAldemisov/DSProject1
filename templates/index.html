@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Project1</title>
+	<!-- bootstrap -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> -->
+	<!-- vue js -->
+	<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
+	<!-- axious (requests) -->
+	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+	<style>
+		.div-input,
+		.div-target {
+			position: relative;
+		}
+		.i_rel, 
+		.t_rel {
+			position: absolute;
+			top: 1.5rem;
+			right: 4rem;
+		}
+		.lang-list {
+			display: none;
+		}
+		div.div-input:hover > .i_rel,
+		div.div-target:hover > .t_rel {
+			display: inline-block;
+			cursor: pointer;
+		}
+
+	</style>
+
+</head>
+<body>
+	<header class="container-fluid jumbotron">
+		<h1>Hello, from v3.3 simple nginx page!</h1>
+		<div>
+			<h2>Current ip:<span id='host_span'></span></h2>
+			<p>
+				My name is {{name}}
+				<br/>
+				Myhostname is {{hostname}}
+			</p>
+			<p>
+				If you see this page, the nginx web server is successfully installed and working. 
+				Further configuration is required.
+			</p>
+			<p>
+				For online documentation and support please refer to <a href="nginx.org">nginx.org</a>.
+				Commercial support is available at <a href="nginx.com">nginx.com</a>.
+			</p>
+			<p><i>Thank you for using nginx.</i></p>
+		</div>
+	</header>
+	<main class="container" id="main"> 
+	<article class="row">
+		<section class="col border">
+			<h2>Initial text</h2>
+			<form :action="ip" method="post">
+				<div class="row">
+					<div class="col">
+						<div class="row div-input">
+							<div class="col">Initial layout</div>
+							<div class="col" >
+								<span><% input_lang %></span>
+								<input type="hidden" name="input_lang" v-model="input_lang">
+							</div>
+							<lang-list class="i_rel lang-list" @select="setILang($event)"></lang-list>
+						</div>
+
+					</div>
+					<div class="col">
+						<div class="row div-target">
+							<div class="col">Target layout</div>
+							<div class="col">
+								<span><% target_lang %></span>
+								<input type="hidden" name="target_lang" v-model="target_lang">
+
+							</div>
+							<lang-list class="t_rel lang-list" @select="setOLang($event)"></lang-list>
+						</div>
+					</div>
+					
+				</div>
+				<textarea class="w-100" class="form-control" rows="5" name='text'>
+					
+				</textarea>
+				<div class="w-100">
+					<button type="submit" class="btn btn-primary w-100">Submit</button>
+				</div>
+			</form>
+		</section>
+		<section class="col border">
+			<h2>Result</h2>
+			<div :class="{'spinner-border': !output}" > <% output %> </div>	
+		</section>
+		<script type="text/javascript">
+			let OUTPUT = '{{ output }}';
+			console.log(OUTPUT)
+		</script>
+	</article>
+</main>
+<script type="text/javascript">
+
+    const ip = location.host;
+    document.getElementById("host_span").innerHTML = ip;
+    console.log(ip);
+
+    Vue.options.delimiters = ["<%","%>"];
+	Vue.component('lang-list', {
+	  data() {
+	  	return {
+	  		langs: [{txt:"RU"}, {txt:"EN"}],
+	  		selected: "RU"
+	  	}
+	  },
+	  template: `
+	  	<ul class="list-group" style="width:5rem">
+	  		<li class="list-group-item" v-for='l in langs' :key="l.txt" @click="select(l)" :class="{'active': selected==l.txt}" > <% l.txt %> </li>
+	  		
+	  	</ul>
+	  `,
+	  methods: {
+	  	select(l) {
+	  		this.selected = l.txt;
+	  		this.$emit('select', l.txt);
+	  	}
+	  }
+
+	})
+	new Vue({
+		el:"#main",
+		data: {
+			input_lang : "RU",
+			target_lang: "RU",
+			output: OUTPUT,
+			ip: "http://" + location.host
+		},
+		methods: {
+			setILang(val){
+				this.input_lang = val;
+			},
+			setOLang(val){
+				this.target_lang = val;
+			}
+		}
+	})
+
+</script>
+</body> 	 
+
+</html>
