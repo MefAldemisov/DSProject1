@@ -30,10 +30,12 @@ $docker-machine inspect Master
 ```
 
 Result:
-![Docker machine inspect maste](./media/inspect_master.png)
+
+![Docker machine inspect master](https://i.imgur.com/IW8YlG4.png)
+
 Some commands were tested, e.g. create, rm, rm -f, start, stop, ssh
 
-![Rm test](./media/docker-machine_rm_test.png)
+![Rm test](https://i.imgur.com/mNWIO1L.png)
 
 4. **Create two Workers as well. Later we will connect them into one swarm. Make a screenshot for docker-machine ls command. You should have 3 running machines.**
 
@@ -43,7 +45,7 @@ docker-machine create --driver hyperv Worker2
 ```
 
 Result of `docker ls command`:
-![Docker ls](./media/docker_ls.png)
+![Docker ls](https://i.imgur.com/5Fs27zg.png)
 
 5. **Now that Docker Swarm is enabled, deploy a true container cluster farm across many Dockerized virtual machines. (One master and two workers). Verify the Docker Swarm status, identify the Master node(s), and how many workers active exist. Take as many screenshots as you need to explain the process.**
 
@@ -53,7 +55,7 @@ Create the swarm (on Master):
 $docker swarm init --advertise-addr 192.168.1.27
 ```
 
-![Swarm init master](./media/swarm_init_master.png)
+![Swarm init master](https://i.imgur.com/Y7Rfrx8.png)
 
 Where `192.168.1.27` - Master’s ip address
 
@@ -73,7 +75,7 @@ There also exist another way to deploy the app - docker stack.
 docker stack deploy -c docker-compose.yaml web
 ```
 
-![Docker stacke deploy](./media/docker_stack_create.png)
+![Docker stack deploy](https://i.imgur.com/dvjIsHM.png)
 
 It creates two services, in our case: `web_web` and `web_redis`
 
@@ -98,25 +100,31 @@ For worker to become master, this line should be run on the master:
 $docker node promote Worker1
 ```
 
-![Node promotion](./media/node_promotion_on_master.png)
+![Node promotion](https://i.imgur.com/eooY9b2.png)
 
-![Worker1 becomes manager](./media/worker1_bacames_manager.png)
+
+![Worker1 becomes manager](https://i.imgur.com/gM5acuI.png)
+
 For master to become a worker, this line should be run on the master:
 
 ```
 $docker node demote Worker1
 ```
 
-![Depromotion of worker1](./media/depromotion_of_worker1.png)
+![Depromotion of worker1](https://i.imgur.com/yNK2HkZ.png)
 
-![Depromote result](./media/swarm_depromote_worker1_result.png)
+![Depromote result](https://i.imgur.com/Ssa39G3.png)
 
 **Hint:** Check if worker nodes require the exact same system patch level.
 
 7. **Deploy a simple Web page, e.g Nginx, showing the hostname of the host node it is running upon, and validate that its instances are spreading across the servers previously deployed on your farm.**
 
 The commands, similar to 5 ex are runned here.
-![Result nginx](./media/nginx.png) 8. **How to scale instances in the Docker Swarm? Could it be done automatically?**
+
+![Result nginx](https://i.imgur.com/1QxPhHV.png)
+
+
+8. **How to scale instances in the Docker Swarm? Could it be done automatically?**
 
 If initially docker service was used to create the containers, then:
 
@@ -127,10 +135,15 @@ $docker service scale web=4
 should be executed.
 
 Scaling process:
-![Scanning process](./media/scaling_process.png)
+
+![Scanning process](https://i.imgur.com/2KXOIwX.png)
+
 
 Scaling result:
-![Scaling result](./media/scaling_result.png)
+
+![Scaling result](https://i.imgur.com/FsGi3gd.png)
+
+
 If `docker stack` was used, then the correct way is to update `docker-compose.yaml` file:
 
 ```
@@ -140,7 +153,9 @@ web:
 		replicas: 3
 ```
 
-![Scale with stack](./media/scale_with_stack.png)
+![Scale with stack](https://i.imgur.com/baOFLbU.png)
+
+
 
 9. **Validate that when a node goes down a new instance is launched. Show how the redistribution of the instances can happen when the dead node comes back alive.**
 
@@ -150,13 +165,16 @@ Draining of the node:
 $docker node update --availability drain Worker2
 ```
 
-![Drain worker2](./media/drain_worker2.png)
+![Drain worker2](https://i.imgur.com/tGrceWp.png)
+
+
 As it can be seen, new nodes are created instead of old one, using other machines (master and worker1)
 
 Returning back:
 
 Availability changing:
-![Worker2 returned to be active](./media/undrain_worker2.png)
+
+![Worker2 returned to be active](https://i.imgur.com/2VpHdkZ.png)
 
 ```
 $docker node update --availability active Worker2
@@ -173,7 +191,9 @@ From the docker [docs](https://docs.docker.com/engine/swarm/swarm-tutorial/drain
 
 Result of another node draining:
 
-![Draining of worker 1](./media/second_drain_worker1.png)
+
+![Draining of worker 1](https://i.imgur.com/0RAITXx.png)
+
 
 (Redistribution on the activated Worker 2)
 
@@ -186,7 +206,9 @@ $docker service update --image <imagename>:<version> web
 ```
 
 Result:
-![Update using docker service](./media/update_service.png)
+
+![Update using docker service](https://i.imgur.com/2sH535K.png)
+
 
 Example of update on 2 nodes:
 
@@ -208,7 +230,9 @@ $ docker stack up -c docker-compose.yaml web
 
 10.4. Check the result:
 
-![Update](./media/update.png)
+
+![Update](https://i.imgur.com/edQXrBA.png)
+
 
 11. **It is a good practice to monitor performance and logs on your servers farm. How can this be done with Docker Swarm? Could it be just CLI or maybe GUI?**
 
@@ -216,16 +240,23 @@ To show the logs of the service (we have 2 of them), the command (CLI) `$docker 
 The result of the command can be seen on the following screenshots:
 Web_web logs
 
-![Web logs](./media/wed_logs.png)
+
+![Web logs](https://i.imgur.com/FPjj67g.png)
+
 
 Web_redis logs
-![Redis logs](./media/redis_logs.png)
+![Redis logs](https://i.imgur.com/jWYodzb.png)
+
 
 If we are talking about GUI, then it is also a good practice, because, for example, we have such good practice with Portainer and its experience with working on Swarm clusters. It provides all the information about logs, basic statistics and provides an ability to connect to the terminal from the Web. Also it can manage the containers, images, networks etc. So, this is a really good practice, exactly in use of Swarm, because it can show the state of Docker instances, which unites in the Swarm.
 
 Example of such an interfase:
-![GUI logs](./media/gui2.png)
-![GUI logs](./media/gui1.png)
+
+![GUI logs](https://i.imgur.com/YSh7Tn6.png)
+
+
+![GUI logs](https://i.imgur.com/921Pdp7.png)
+
 
 12. **Please explain what is “Out Of Memory Exception (OOME)”, how it could affect Docker services, and which configuration can be set to avoid this issue?**
 
@@ -235,7 +266,9 @@ OOME is the situation when your services or containers try to use more memory th
 
 To change the CPU utilization the following changes should be applied to the docker-compose.yaml file:
 
-![CPU limits](./media/cpu_limits.png)
+
+![CPU limits](https://i.imgur.com/LlSj5Su.png)
+
 
 14. **Verify the size of the Docker images that you're working with. Can this size be reduced and how can we achieve this?**
 
@@ -260,7 +293,9 @@ We can exactly:
 
 This is a decoder ["like Artemy Lebedev's"](https://www.artlebedev.ru/decoder/). This tool was created for changing the keyboard layout of printed text. This version supports only Russian->English and English->Russian decodings.
 
-![Result](./media/result.png)
+
+![Result](https://i.imgur.com/F1Pv9le.png)
+
 
 ### References:
 
