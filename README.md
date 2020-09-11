@@ -45,8 +45,6 @@ docker-machine create --driver hyperv Worker2
 Result of `docker ls command`:
 ![Docker ls](./media/docker_ls.png)
 
-https://linuxtechlab.com/create-manage-docker-hosts-with-docker-machine/
-
 5. **Now that Docker Swarm is enabled, deploy a true container cluster farm across many Dockerized virtual machines. (One master and two workers). Verify the Docker Swarm status, identify the Master node(s), and how many workers active exist. Take as many screenshots as you need to explain the process.**
 
 Create the swarm (on Master):
@@ -68,8 +66,6 @@ docker service create --replicas 2 -p 80:80 --name web nginx
 ```
 
 --replicas - specification of amount of containers, which should be started
-
-https://hackmd.io/@BigDataInnopolis/By6VKwUSB#docker-machine-does-not-see-Virtual-box
 
 There also exist another way to deploy the app - docker stack.
 
@@ -94,13 +90,6 @@ services:
     image: "redis:alpine"
 ```
 
-https://rominirani.com/docker-swarm-tutorial-b67470cf8872
-
-From https://docs.docker.com/engine/swarm/join-nodes/ :
-
-> Adding worker nodes increases capacity. When you deploy a service to a swarm, the Engine schedules tasks on available nodes whether they are worker nodes or manager nodes. When you add workers to your swarm, you increase the scale of the swarm to handle tasks without affecting the manager raft consensus.
-> Manager nodes increase fault-tolerance. Manager nodes perform the orchestration and cluster management functions for the swarm. Among manager nodes, a single leader node conducts orchestration tasks. If a leader node goes down, the remaining manager nodes elect a new leader and resume orchestration and maintenance of the swarm state. By default, manager nodes also run tasks.
-
 6. **How can a Worker be promoted to Master and vice versa? Please explain if special requirements are needed to perform this action? Perform the process and explain it.**
 
 For worker to become master, this line should be run on the master:
@@ -121,8 +110,6 @@ $docker node demote Worker1
 ![Depromotion of worker1](./media/depromotion_of_worker1.png)
 
 ![Depromote result](./media/swarm_depromote_worker1_result.png)
-
-https://stackoverflow.com/questions/42412863/changing-node-to-manager-in-docker-swarm-what-command-should-i-use
 
 **Hint:** Check if worker nodes require the exact same system patch level.
 
@@ -175,7 +162,7 @@ Availability changing:
 $docker node update --availability active Worker2
 ```
 
-From the docker docs:
+From the docker [docs](https://docs.docker.com/engine/swarm/swarm-tutorial/drain-node/):
 
 > When you set the node back to Active availability, it can receive new tasks:
 >
@@ -243,7 +230,6 @@ Example of such an interfase:
 12. **Please explain what is “Out Of Memory Exception (OOME)”, how it could affect Docker services, and which configuration can be set to avoid this issue?**
 
 OOME is the situation when your services or containers try to use more memory than you have in your system. On Docker services it can affect this way: some of Docker containers can be killed by the kernel of OOM service. To prevent this scenario, you can just be sure that your containers run on the hosts with sufficient memory.
-https://docs.docker.com/config/containers/resource_constraints/
 
 13. **Deploy a docker container with at least 15% of CPU every second for memory efficiency.**
 
@@ -271,3 +257,14 @@ We can exactly:
 ### Part 2. App.
 
 15. **Instead of a simple web page in step 7 elaborate your own web application. Be creative. Again, interaction with a user is required.**
+
+This is a decoder ["like Artemy Lebedev's"](https://www.artlebedev.ru/decoder/). This tool was created for changing the keyboard layout of printed text. This version supports only Russian->English and English->Russian decodings.
+
+![Result](./media/result.png)
+
+### References:
+
+-   [Manager and Worker nodes descroption](https://docs.docker.com/engine/swarm/join-nodes/)
+-   [Docker swarm + create service tutorial](https://rominirani.com/docker-swarm-tutorial-b67470cf8872)
+-   [Node promotion](https://stackoverflow.com/questions/42412863/changing-node-to-manager-in-docker-swarm-what-command-should-i-use)
+-   [OOME](https://docs.docker.com/config/containers/resource_constraints/)
